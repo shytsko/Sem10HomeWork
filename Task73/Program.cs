@@ -17,13 +17,10 @@
 // Группа 5: 16 24 36 40
 // Группа 6: 32 48
 
-double[][] groups = { new double[] { 1 } };
+double[][] groups = new double[0][];
 double n = ReadDouble("Введите число N = ");
 
-groups = AddToArrayOfDoubleArrays(groups, new double[0]);
-groups = AddToArrayOfDoubleArrays(groups, new double[0]);
-
-for (double i = 2; i <= n; i += 1)
+for (double i = 1; i <= n; i += 1)
 {
     bool isNumberAdded = false;
     for (int j = 0; j < groups.Length; j++)
@@ -37,7 +34,7 @@ for (double i = 2; i <= n; i += 1)
     }
     if (!isNumberAdded)
     {
-        groups = AddToArrayOfDoubleArrays(groups, new double[] {i});
+        groups = AddToArrayOfDoubleArrays(groups, new double[] { i });
     }
 }
 
@@ -70,12 +67,24 @@ bool IsPrimeForGroup(double value, double[] group)
 {
     for (int i = 0; i < group.Length; i++)
     {
-        if (value % group[i] == 0)
+        //if (value % group[i] == 0)
+        if (GCD(value, group[i]) != 1)
         {
             return false;
         }
     }
     return true;
+}
+
+double GCD(double a, double b)
+{
+    if (a < b)
+    {
+        double temp = a;
+        a = b;
+        b = temp;
+    }
+    return (b != 0) ? GCD(b, a % b) : a;
 }
 
 void PrintGroups(double[][] array)
