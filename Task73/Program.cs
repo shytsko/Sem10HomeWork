@@ -25,7 +25,7 @@ for (double i = 1; i <= n; i += 1)
     bool isNumberAdded = false;
     for (int j = 0; j < groups.Length; j++)
     {
-        if (IsPrimeForGroup(i, groups[j]))
+        if (IsNoDividersInGroup(i, groups[j]))
         {
             groups[j] = AddToArrayOfDouble(groups[j], i);
             isNumberAdded = true;
@@ -63,28 +63,17 @@ double[][] AddToArrayOfDoubleArrays(double[][] sourceArray, double[] value)
     return newArray;
 }
 
-bool IsPrimeForGroup(double value, double[] group)
+bool IsNoDividersInGroup(double value, double[] group)
 {
-    for (int i = 0; i < group.Length; i++)
+    double halfValue = value / 2;
+    for (int i = 0; i < group.Length && group[i] <= halfValue; i++)
     {
-        //if (value % group[i] == 0)
-        if (GCD(value, group[i]) != 1)
+        if (value % group[i] == 0)
         {
             return false;
         }
     }
     return true;
-}
-
-double GCD(double a, double b)
-{
-    if (a < b)
-    {
-        double temp = a;
-        a = b;
-        b = temp;
-    }
-    return (b != 0) ? GCD(b, a % b) : a;
 }
 
 void PrintGroups(double[][] array)
