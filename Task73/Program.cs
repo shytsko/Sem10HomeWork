@@ -27,32 +27,44 @@ for (double i = 1; i <= n; i += 1)
     {
         if (IsNoDividersInGroup(i, groups[j]))
         {
-            groups[j] = AddToArrayOfDouble(groups[j], i);
+            groups[j] = AddToGroup(i, groups[j]);
             isNumberAdded = true;
             break;
         }
     }
     if (!isNumberAdded)
     {
-        groups = AddToArrayOfDoubleArrays(groups, new double[] { i });
+        groups = AddGroups(groups, new double[] { 1, i, 0, 0, 0, 0, 0, 0, 0, 0 });
     }
 }
 
 Console.WriteLine($"Количество групп: {groups.Length}");
 PrintGroups(groups);
 
-double[] AddToArrayOfDouble(double[] sourceArray, double value)
+double[] AddToGroup(double value, double[] group)
 {
-    double[] newArray = new double[sourceArray.Length + 1];
-    for (int i = 0; i < sourceArray.Length; i++)
+    double[] temp;
+    int sizeGroup = Convert.ToInt32(group[0]);
+
+    if (sizeGroup == group.Length - 1)
     {
-        newArray[i] = sourceArray[i];
+        temp = new double[group.Length * 2];
+        for (int i = 0; i < group.Length; i++)
+        {
+            temp[i] = group[i];
+        }
     }
-    newArray[newArray.Length - 1] = value;
-    return newArray;
+    else
+    {
+        temp = group;
+    }
+    sizeGroup++;
+    temp[0] = sizeGroup;
+    temp[sizeGroup] = value;
+    return temp;
 }
 
-double[][] AddToArrayOfDoubleArrays(double[][] sourceArray, double[] value)
+double[][] AddGroups(double[][] sourceArray, double[] value)
 {
     double[][] newArray = new double[sourceArray.Length + 1][];
     for (int i = 0; i < sourceArray.Length; i++)
@@ -66,7 +78,7 @@ double[][] AddToArrayOfDoubleArrays(double[][] sourceArray, double[] value)
 bool IsNoDividersInGroup(double value, double[] group)
 {
     double halfValue = value / 2;
-    for (int i = 0; i < group.Length && group[i] <= halfValue; i++)
+    for (int i = 1; i < group.Length && group[i] <= halfValue; i++)
     {
         if (value % group[i] == 0)
         {
@@ -76,14 +88,15 @@ bool IsNoDividersInGroup(double value, double[] group)
     return true;
 }
 
-void PrintGroups(double[][] array)
+void PrintGroups(double[][] groups)
 {
-    for (int i = 0; i < array.Length; i++)
+    for (int i = 0; i < groups.Length; i++)
     {
         Console.Write($"Группа {i + 1}: ");
-        for (int j = 0; j < array[i].Length; j++)
+        int sizeGroup = Convert.ToInt32(groups[i][0]);
+        for (int j = 1; j <= sizeGroup; j++)
         {
-            Console.Write($"{array[i][j]} ");
+            Console.Write($"{groups[i][j]} ");
         }
         Console.WriteLine();
     }
