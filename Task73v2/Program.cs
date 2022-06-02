@@ -16,7 +16,7 @@
 // Группа 4: 8 12 18 20 27 28 30 42 44 45 50
 // Группа 5: 16 24 36 40
 // Группа 6: 32 48
-// 
+//
 // Вариант 2
 
 double n = ReadDouble("Введите число N = ");
@@ -25,22 +25,21 @@ int countGroups = Convert.ToInt32(log2N - log2N % 1.0 + 1);
 double[][] groups = new double[countGroups][];
 
 double i = 1;
-int indexGroup = 0;
-double startNextGroup = Math.Min(Math.Pow(2, indexGroup + 1), n);
-groups[indexGroup] = new double[Convert.ToInt32(startNextGroup - i)];
+int indexGroup = -1;
+double startNextGroup = 1;
 int k = 0;
-while (i <= n)
+do
 {
     if (i == startNextGroup)
     {
         indexGroup++;
-        startNextGroup = Math.Min(Math.Pow(2, indexGroup + 1), n + 1);
+        startNextGroup = Math.Min(i * 2, n + 1);
         groups[indexGroup] = new double[Convert.ToInt32(startNextGroup - i)];
         k = 0;
     }
     groups[indexGroup][k++] = i;
     i += 1;
-}
+} while (i <= n);
 
 Console.WriteLine($"Количество групп: {groups.Length}");
 PrintGroups(groups);
@@ -58,7 +57,6 @@ void PrintGroups(double[][] groups)
     }
     Console.WriteLine();
 }
-
 
 double ReadDouble(string message)
 {
